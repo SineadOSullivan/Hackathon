@@ -1,0 +1,151 @@
+﻿
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+        body {
+        background-image: url("background.jpg")
+    }
+    .state {
+        fill: none;
+        stroke: #a9a9a9;
+        stroke-width: 1;
+    }
+
+        .state:hover {
+            fill-opacity: 0.5;
+        }
+
+    #tooltip {
+        position: absolute;
+        text-align: center;
+        padding: 20px;
+        margin: 10px;
+        font: 12px sans-serif;
+        background: lightsteelblue;
+        border: 1px;
+        border-radius: 2px;
+        pointer-events: none;
+    }
+
+        #tooltip h4 {
+            margin: 0;
+            font-size: 14px;
+        }
+
+    #tooltip {
+        background: rgba(0,0,0,0.9);
+        border: 1px solid grey;
+        border-radius: 5px;
+        font-size: 12px;
+        width: auto;
+        padding: 4px;
+        color: white;
+        opacity: 0;
+    }
+
+        #tooltip table {
+            table-layout: fixed;
+        }
+
+        #tooltip tr td {
+            padding: 0;
+            margin: 0;
+        }
+
+            #tooltip tr td:nth-child(1) {
+                width: 50px;
+            }
+
+            #tooltip tr td:nth-child(2) {
+                text-align: center;
+            }
+</style>
+  
+    <title>Hackathon Map</title>
+
+    <header class="entry-header">
+        <h1 class="entry-title"><font color="white">Hackathon Map</font></h1>
+        <div class="entry-meta">
+        </div>
+
+
+    </header>
+
+    <body>
+
+        <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+        <div id="tooltip"></div><!-- div to hold tooltip. -->
+        <svg width="960" height="600" id="statesvg"></svg> <!-- svg to hold the map. -->
+        <script src="uStates2.js"></script> <!-- creates uStates. -->
+    
+        <script>
+
+            function tooltipHtml(n, d) {	/* function to create html content string in tooltip div. */
+                //console.log(n,d);
+
+                return "<h4>" + n + "</h4><table>" +
+                    "<tr><td>Flood:</td><td>" + (d.Flood) + "</td></tr>" +
+                    "<tr><td>Hurricane:</td><td>" + (d.Hurricane) + "</td></tr>" +
+                    "<tr><td>Tornado:</td><td>" + (d.Tornado) + "</td></tr>" +
+                    "<tr><td>Storm: </td><td>" + (d.Severe_Storm) + "</td></tr>" +
+                    "<tr><td>Total: </td><td>" + (d.total_disasters) + "</td></tr>" +
+                    "</table>";
+            }
+
+
+
+            var data = {};
+            var rawData = {};
+            var myData = {};
+
+            function myState(d) {
+                this.state = d.state;
+                this.abbrv = d.abbrv;
+                this.total_disasters = d.total_disasters;
+                this.colorval = d.colorval;
+                this.color = d3.interpolate("blue", "red")(+d.colorval);
+                this.Flood = d.Flood;
+                this.Tornado = d.Tornado;
+                this.Hurricane = d.Hurricane;
+                this.Severe_Storm = d.Severe_Storm
+                this.id = d.abbrv;
+                //console.log(this.id);
+            }
+
+            var ii = 0;
+            d3.csv("disdata2.csv", function (error, rawData) {
+                rawData.forEach(function (d) {
+                    state: d.state; // lowercase
+                    abbrv: d.abbrv; // lowercase
+                    total_disasters: +d.total_disasters; // lowercase and convert "Length" to number
+                    colorval: +d.colorval;
+                    Flood = +d.Flood;
+                    Tornado = +d.Tornado;
+                    Hurricane = +d.Hurricane;
+                    Severe_Storm = +d.Severe_Storm
+                    myData[d.abbrv] = new myState(d);
+                    data = rawData;
+                    //console.log(d);
+                });
+
+
+                uStates.draw("#statesvg", myData, tooltipHtml);
+                d3.select(self.frameElement).style("height", "600px");
+                //console.log(data[0].color);
+
+
+
+
+                // });
+
+
+            });
+            //console.log(data);
+            
+        </script>
+
+        
+         
+    </body>
