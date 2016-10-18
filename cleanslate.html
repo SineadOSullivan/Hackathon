@@ -42,33 +42,37 @@ path {
     d3.json("USstates.json", function(error, collection) {
           if (error) throw error;
   
-          function projectPoint(x, y) {
-            var point = map.latLngToLayerPoint(new L.LatLng(y, x));
-            this.stream.point(point.x, point.y);
-                }
-
-           var transform = d3.geoTransform({point: projectPoint}),
+         var transform = d3.geoTransform({point: projectPoint}),
                 path = d3.geoPath().projection(transform);
 
-           var stateoutlines = g.selectAll("path")
+         var stateoutlines = g.selectAll("path")
                 .data(collection.features)
                 .enter().append("path");
 
-           stateoutlines.attr("d", path);
+          map.on("moveend", reset);
+            reset();
+           
+           function reset() {
+                 //console.log("reset was called");
+               var bounds = path.bounds(collection),
+                   topLeft = bounds[0],
+                   bottomRight = bounds[1];
 
-           var bounds = path.bounds(collection),
-               topLeft = bounds[0],
-               bottomRight = bounds[1];
+               svg .attr("width", bottomRight[0] - topLeft[0])
+                    .attr("height", bottomRight[1] - topLeft[1])
+                    .style("left", topLeft[0] + "px")
+                    .style("top", topLeft[1] + "px");
 
-           svg .attr("width", bottomRight[0] - topLeft[0])
-                .attr("height", bottomRight[1] - topLeft[1])
-                .style("left", topLeft[0] + "px")
-                .style("top", topLeft[1] + "px");
+                g   .attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");
 
-            g   .attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");
+                stateoutlines.attr("d", path);
+                    }
 
-            map.on("viewreset", function reset() {
-                feature.attr("d",path)});
+           function projectPoint(x, y) {
+                //console.log("projectPoint was called");
+                var point = map.latLngToLayerPoint(new L.LatLng(y, x));
+                this.stream.point(point.x, point.y);
+                    }
  
 });
 
