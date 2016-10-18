@@ -1,0 +1,44 @@
+﻿
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+    body {
+        margin: 0;
+    }
+
+path {
+  fill: #000;
+  fill-opacity: .2;
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+
+      path:hover { fill: rebeccapurple;fill-opacity: .7;}
+
+      svg { position: relative; }
+</style>
+<body>
+    <div id="map" style="width: 600px; height: 400px;"></div>
+    <p>Is this part working?</p>
+    <script src="//d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+    <script>
+
+    var map = new L.Map("map").setView([51.505, -0.09], 13);
+
+   L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox.streets',
+        accessToken: 'pk.eyJ1Ijoia2dyaWVuZGxpbmciLCJhIjoiY2l1ZmtvbWE1MDBmYjJ5bXBtN2hwZjIyNCJ9.VpQMostuYQYzhj_Yvg1xyg'
+        }).addTo(map);
+
+
+
+</script>
+
+
+</body>
+</html>

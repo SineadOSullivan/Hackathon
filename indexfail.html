@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+    .background {
+        fill: none;
+        pointer-events: all;
+    }
+
+    body {
+        background-image: url("background.jpg");
+    }
+
+    #states {
+        fill: none;
+    }
+
+        #states .active {
+            fill: blue;
+        }
+
+    #state-borders {
+        fill: none;
+        stroke: mediumvioletred;
+        stroke-width: 1.5px;
+        stroke-linejoin: round;
+        stroke-linecap: round;
+        pointer-events: none;
+    }
+</style>
+<body>
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script src="//d3js.org/topojson.v1.min.js"></script>
+    <script src="//d3js.org/d3-tile.v0.0.min.js"></script>
+    <script>
+
+var pi = Math.PI,
+    tau = 2 * pi;
+
+var width = 960,
+    height = 500,
+    centered;
+
+var projection = d3.geo.albersUsa()
+    .scale(1070)
+    .translate([width / 2, height / 2]);
+
+var projectionraster = d3.geo.mercator();
+
+
+var path = d3.geo.path()
+    .projection(projection);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+svg.append("rect")
+    .attr("class", "background")
+    .attr("width", width)
+    .attr("height", height)
+    .on("click", clicked);
+
+
+var raster = svg.append("g");
+var vector = svg.append("g");
+
+
+
+  var tiles = d3.tile()
+      .size([width, height])
+      .scale(projectionraster.scale() * tau)
+      .translate(projectionraster([0, -50]))
+      ();
+
+  raster.selectAll("image")
+      .data(tiles)
+    .enter().append("image")
+      .attr("xlink:href", function(d) { return "http://" + "abc"[d[1] % 3] + ".tile.openstreetmap.org/" + d[2] + "/" + d[0] + "/" + d[1] + ".png"; })
+      .attr("x", function(d) { return (d[0] + tiles.translate[0]) * tiles.scale; })
+      .attr("y", function(d) { return (d[1] + tiles.translate[1]) * tiles.scale; })
+      .attr("width", tiles.scale)
+      .attr("height", tiles.scale);
+
+
+ d3.json("us.json", function(error, us) {
+  if (error) throw error;
+
+  vector.append("g")
+      .attr("id", "states")
+    .selectAll("path")
+      .data(topojson.feature(us, us.objects.states).features)
+    .enter().append("path")
+      .attr("d", path)
+      .on("click", clicked);
+
+  vector.append("path")
+      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+      .attr("id", "state-borders")
+      .attr("d", path);
+});
+
+
+function clicked(d) {
+  var x, y, k;
+
+  if (d && centered !== d) {
+    var centroid = path.centroid(d);
+    x = centroid[0];
+    y = centroid[1];
+    k = 4;
+    centered = d;
+  } else {
+    x = width / 2;
+    y = height / 2;
+    k = 1;
+    centered = null;
+  }
+
+  vector.selectAll("path")
+      .classed("active", centered && function(d) { return d === centered; });
+
+  vector.transition()
+      .duration(750)
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+      .style("stroke-width", 1.5 / k + "px");
+}
+
+
+
+    </script>

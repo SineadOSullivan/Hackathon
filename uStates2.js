@@ -77,8 +77,34 @@
 		d3.select(id).selectAll(".state")
 			.data(uStatePaths).enter().append("path").attr("class","state").attr("d",function(d){ return d.d;})
 			.style("fill",function(d){ return data[d.id].color; })
-			.on("mouseover", mouseOver).on("mouseout", mouseOut);
+			.on("mouseover", mouseOver).on("mouseout", mouseOut)
+            .on("click", clicked);
 
+
+ function clicked(d) {
+  var x, y, k;
+  var centered;
+  if (d && centered !== d) {
+    var centroid = uStatePaths.centroid(d);
+    x = centroid[0];
+    y = centroid[1];
+    k = 4;
+    centered = d;
+  } else {
+    x = width / 2;
+    y = height / 2;
+    k = 1;
+    centered = null;
+  }
+
+  g.selectAll("uStatePaths")
+      .classed("active", centered && function(d) { return d === centered; });
+
+  g.transition()
+      .duration(750)
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+      .style("stroke-width", 1.5 / k + "px");
+}
 
 	}
 	
