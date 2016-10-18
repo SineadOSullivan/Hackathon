@@ -19,8 +19,8 @@ path {
       svg { position: relative; }
 </style>
 <body>
-    <div id="map" style="width: 600px; height: 400px;"></div>
-    <p>Is this part working?</p>
+    <div id="map" style="width: 960px; height: 500px;"></div>
+    <p>Hello Sinead!</p>
     <script src="//d3js.org/d3.v4.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
@@ -36,6 +36,41 @@ path {
         }).addTo(map);
 
 
+    var svg = d3.select(map.getPanes().overlayPane).append("svg"),
+        g = svg.append("g").attr("class", "leaflet-zoom-hide");
+
+    d3.json("USstates.json", function(error, collection) {
+          if (error) throw error;
+  
+          function projectPoint(x, y) {
+            var point = map.latLngToLayerPoint(new L.LatLng(y, x));
+            this.stream.point(point.x, point.y);
+                }
+
+           var transform = d3.geoTransform({point: projectPoint}),
+                path = d3.geoPath().projection(transform);
+
+           var stateoutlines = g.selectAll("path")
+                .data(collection.features)
+                .enter().append("path");
+
+           stateoutlines.attr("d", path);
+
+           var bounds = path.bounds(collection),
+               topLeft = bounds[0],
+               bottomRight = bounds[1];
+
+           svg .attr("width", bottomRight[0] - topLeft[0])
+                .attr("height", bottomRight[1] - topLeft[1])
+                .style("left", topLeft[0] + "px")
+                .style("top", topLeft[1] + "px");
+
+            g   .attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");
+
+            map.on("viewreset", function reset() {
+                feature.attr("d",path)});
+ 
+});
 
 </script>
 
