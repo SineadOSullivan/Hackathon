@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+
+<script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+
+<style>
+    body {
+        margin: 0;
+    }
+
+path {
+  fill:whitesmoke;
+  fill-opacity: .1;
+  stroke: rebeccapurple;
+  stroke-width: 2px;
+  pointer-events:all;
+}
+
+
+path:hover {
+  fill: rebeccapurple;
+  fill-opacity: .3;
+}
+
+
+svg { position: relative; }
+
+</style>
+
+<body>
+    <div id="map" style="width: 960px; height: 500px;"></div>
+
+    <p> test 1  2  3 </p>
+
+    <script src="//d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+    <script type="text/javascript" src="us-states.js"></script>
+
+    
+    <script>
+    
+    L.mapbox.accessToken = 'pk.eyJ1Ijoic2luZWFkb3N1bGxpdmFuIiwiYSI6ImNpdWVhbDBmczAwZDQyenFma2FzdTFyNzcifQ.bYkIT8IlAfaK-QVThwusBw';
+
+    var map = L.mapbox.map('map');
+
+    //var map = L.mapbox.map('map', null, {maxZoom: 18}).setView([37.8, -96.9], 4);
+
+
+      /*  L.tileLayer('http://tiles.mapc.org/trailmap-onroad/{z}/{x}/{y}.png',
+        {
+          maxZoom: 17,
+          minZoom: 9
+        }).addTo(map);
+
+    var geojson = L.geoJson(statesData).addTo(map); 
+
+    var layers = {
+      Streets: L.mapbox.tileLayer('mapbox.streets'),
+      Outdoors: L.mapbox.tileLayer('mapbox.outdoors'),
+      Satellite: L.mapbox.tileLayer('mapbox.satellite')
+    };
+
+    layers.Streets.addTo(map);
+    L.control.layers(layers).addTo(map);
+
+    var imagename = 'testimagespaceshuttle.jpg',
+        imageBounds = [[40.712216, -74.22655], [39.773941, -75.12544]];
+
+   L.imageOverlay(imagename, imageBounds).addTo(map);
+
+
+
+</script>
+
+
+</body>
+</html>
