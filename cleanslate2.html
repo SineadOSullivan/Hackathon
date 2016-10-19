@@ -1,0 +1,66 @@
+﻿
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+<style>
+    body {
+        margin: 0;
+    }
+
+path {
+  fill: green;
+  fill-opacity: .1;
+  stroke: darkgreen;
+  stroke-width: 2px;
+  pointer-events:all;
+}
+
+
+path:hover {
+  fill: rebeccapurple;
+  fill-opacity: .7;
+}
+
+
+svg { position: relative; }
+
+</style>
+<body>
+    <div id="map" style="width: 960px; height: 500px;"></div>
+    <p>This map was created with the help of many fantastic online tutorials, including:
+    <p> http://leafletjs.com/examples/choropleth/example-basic.html </p>
+    <p> https://maptimeboston.github.io/leaflet-intro/ </p>
+    <p> https://bost.ocks.org/mike/leaflet/ </p>
+
+
+    </p>
+    <script src="//d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+    <script type="text/javascript" src="us-states.js"></script>
+    
+    <script>
+
+    var map = new L.Map("map").setView([37.8, -96.9], 4);
+
+   L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox.streets',
+        accessToken: 'pk.eyJ1Ijoia2dyaWVuZGxpbmciLCJhIjoiY2l1ZmtvbWE1MDBmYjJ5bXBtN2hwZjIyNCJ9.VpQMostuYQYzhj_Yvg1xyg'
+        }).addTo(map);
+
+L.tileLayer('http://tiles.mapc.org/trailmap-onroad/{z}/{x}/{y}.png',
+{
+  maxZoom: 17,
+  minZoom: 9
+}).addTo(map);
+
+var geojson = L.geoJson(statesData).addTo(map);
+
+
+
+</script>
+
+
+</body>
+</html>
