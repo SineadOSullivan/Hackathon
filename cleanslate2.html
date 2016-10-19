@@ -8,9 +8,9 @@
     }
 
 path {
-  fill: green;
+  fill:whitesmoke;
   fill-opacity: .1;
-  stroke: darkgreen;
+  stroke: rebeccapurple;
   stroke-width: 2px;
   pointer-events:all;
 }
@@ -41,11 +41,20 @@ svg { position: relative; }
     <script>
 
     var map = new L.Map("map").setView([37.8, -96.9], 4);
-
-         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+/*
+      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
         maxZoom: 18,
         id: 'mapbox.streets',
+        accessToken: 'pk.eyJ1Ijoia2dyaWVuZGxpbmciLCJhIjoiY2l1ZmtvbWE1MDBmYjJ5bXBtN2hwZjIyNCJ9.VpQMostuYQYzhj_Yvg1xyg'
+        }).addTo(map);
+        */
+
+
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox.satellite',
         accessToken: 'pk.eyJ1Ijoia2dyaWVuZGxpbmciLCJhIjoiY2l1ZmtvbWE1MDBmYjJ5bXBtN2hwZjIyNCJ9.VpQMostuYQYzhj_Yvg1xyg'
         }).addTo(map);
 
@@ -57,7 +66,7 @@ svg { position: relative; }
 
     var geojson = L.geoJson(statesData).addTo(map);
 
-    L.tileLayer('testimagespaceshuttle.jpg',{}).addTo(map);
+   // L.tileLayer('testimagespaceshuttle.jpg',{}).addTo(map);
 
 
 
