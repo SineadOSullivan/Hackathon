@@ -1,29 +1,36 @@
 ﻿
 <!DOCTYPE html>
 <meta charset="utf-8">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
 <style>
     body {
         margin: 0;
     }
 
 path {
-  fill: none;
-  fill-opacity: .2;
-  stroke: rebeccapurple;
-  stroke-width: 1.5px;
+  fill: green;
+  fill-opacity: .1;
+  stroke: darkgreen;
+  stroke-width: 2px;
+  pointer-events:all;
 }
 
 
-      path:hover { fill: rebeccapurple;fill-opacity: .7;}
+path:hover {
+  fill: rebeccapurple;
+  fill-opacity: .7;
+}
 
-      svg { position: relative; }
+
+svg { position: relative; }
+
 </style>
 <body>
     <div id="map" style="width: 960px; height: 500px;"></div>
     <p>Hello Sinead!</p>
     <script src="//d3js.org/d3.v4.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+    
     <script>
 
     var map = new L.Map("map").setView([37.8, -96.9], 4);
@@ -35,9 +42,17 @@ path {
         accessToken: 'pk.eyJ1Ijoia2dyaWVuZGxpbmciLCJhIjoiY2l1ZmtvbWE1MDBmYjJ5bXBtN2hwZjIyNCJ9.VpQMostuYQYzhj_Yvg1xyg'
         }).addTo(map);
 
+L.tileLayer('http://tiles.mapc.org/trailmap-onroad/{z}/{x}/{y}.png',
+{
+  maxZoom: 17,
+  minZoom: 9
+}).addTo(map);
+
 
     var svg = d3.select(map.getPanes().overlayPane).append("svg"),
         g = svg.append("g").attr("class", "leaflet-zoom-hide");
+
+
 
     d3.json("USstates.json", function(error, collection) {
           if (error) throw error;
@@ -51,7 +66,8 @@ path {
 
           map.on("moveend", reset);
             reset();
-           
+ 
+            
            function reset() {
                  //console.log("reset was called");
                var bounds = path.bounds(collection),
@@ -73,6 +89,7 @@ path {
                 var point = map.latLngToLayerPoint(new L.LatLng(y, x));
                 this.stream.point(point.x, point.y);
                     }
+
  
 });
 
