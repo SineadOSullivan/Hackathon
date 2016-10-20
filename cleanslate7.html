@@ -130,8 +130,8 @@ function FileHelper()
 
 var text = FileHelper.readStringFromFileAtPath ( "http://localhost:8080/matthewtestimage2wld.wld" );
 var textarray = text.split("\n");
-console.log(textarray);
-console.log(textarray[0]);
+//console.log(textarray);
+//console.log(textarray[0]);
 
 var wldarray = text.split("\n").map(function(item) {
     return parseFloat(item);
@@ -165,34 +165,60 @@ L.imageOverlay('matthewtestimage2.jpg', imagebounds2).addTo(map);
 </script>
 <script>
 
-$.ajax({
-  url: "Matthew/Oct 16",
-  success: function(data){
-     $(data).find("a:contains(.jpg)").each(function(){
-        // will loop through 
-        var images = $(this).attr("href");
-        console.log(images);
-        $('<p></p>').html(images).appendTo('a div of your choice')
+var folder = "Matthew/Oct 16";
 
-     });
-  }
-});
-
+function getwlds(){
+var wlds=[];
 
 $.ajax({
-  url: "Matthew/Oct 16",
+  async: false,
+  url: folder,
   success: function(data){
      $(data).find("a:contains(.wld)").each(function(){
         // will loop through 
-        var wlds = $(this).attr("href");
-        console.log(wlds);
-        $('<p></p>').html(wlds).appendTo('a div of your choice')
+            var newwld;
+             newwld = $(this).attr("href");
+             wlds.push(newwld);
+             //wlds = wlds + newwld;
+       //console.log(wlds);
 
      });
   }
 });
+return wlds
+//console.log(wlds);
+};
 
- 
+var wldlist = getwlds();
+console.log(wldlist);
+
+
+
+function getjpgs(){
+var jpgs=[];
+
+$.ajax({
+  async: false,
+  url: folder,
+  success: function(data){
+     $(data).find("a:contains(.jpg)").each(function(){
+        // will loop through 
+            var newjpg;
+             newjpg = $(this).attr("href");
+             jpgs.push(newjpg);
+
+
+     });
+  }
+});
+return jpgs
+//console.log(jpgs);
+};
+
+var jpglist = getjpgs();
+console.log(jpglist);
+
+
 
 </script>
 
