@@ -37,6 +37,7 @@ svg { position: relative; }
     <script src="//d3js.org/d3.v4.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
     <script type="text/javascript" src="us-states.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
     <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
     <link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
     
@@ -99,7 +100,7 @@ var A = 0.0000026949,
     imagew = 9351;
     imageh = 9351;
 
-var upper_left = [F,E];
+ var upper_left = [F,E];
 
 function findrightlon(pixellon, leftlon, imagewidth) {
     return leftlon + (imagewidth*pixellon);
@@ -118,9 +119,53 @@ L.marker(lower_right).addTo(map);
 L.imageOverlay('oct16testimage.jpg', [lower_right, upper_left]).addTo(map);
 
 
+function FileHelper()
+{}
+{
+    FileHelper.readStringFromFileAtPath = function(pathOfFileToReadFrom)
+    {
+        var request = new XMLHttpRequest();
+        request.open("GET", pathOfFileToReadFrom, false);
+        request.send(null);
+        var returnValue = request.responseText;
 
- 
+        return returnValue;
+    }
+};
 
+var text = FileHelper.readStringFromFileAtPath ( "http://localhost:8080/matthewtestimage2wld.wld" );
+var textarray = text.split("\n");
+console.log(textarray);
+console.log(textarray[0]);
+
+var wldarray = text.split("\n").map(function(item) {
+    return parseFloat(item);
+});
+
+
+
+function wldtolatlon(wldarrayin){
+var A = wldarrayin[0],
+    B= wldarrayin[1],
+    C = wldarrayin[2],
+    D = wldarrayin[3],
+    E = wldarrayin[4],
+    F = wldarrayin[5],
+    imagew = 9351,
+    imageh = 9351;
+
+    var upper_left = [F,E];
+    var lower_right = [findrightlat(D,F,imageh),findrightlon(A,E,imagew)];
+
+    return [lower_right, upper_left];
+};
+
+var imagebounds2 = wldtolatlon(wldarray);
+
+L.marker(imagebounds2[1]).addTo(map);
+L.marker(imagebounds2[0]).addTo(map);
+
+L.imageOverlay('matthewtestimage2.jpg', imagebounds2).addTo(map);
 
 </script>
 
