@@ -42,25 +42,6 @@ svg { position: relative; }
  L.mapbox.accessToken = 'pk.eyJ1Ijoic2luZWFkb3N1bGxpdmFuIiwiYSI6ImNpdWVhbDBmczAwZDQyenFma2FzdTFyNzcifQ.bYkIT8IlAfaK-QVThwusBw';
 
     var map = L.mapbox.map('map', null, {maxZoom: 18}).setView([37.8, -96.9], 4);
-/*
-      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        maxZoom: 18,
-        id: 'mapbox.satellite',
-        accessToken: 'pk.eyJ1Ijoia2dyaWVuZGxpbmciLCJhIjoiY2l1ZmtvbWE1MDBmYjJ5bXBtN2hwZjIyNCJ9.VpQMostuYQYzhj_Yvg1xyg'
-        }).addTo(map);
-        
-    
-
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        maxZoom: 18,
-        id: 'mapbox.streets',
-        accessToken: 'pk.eyJ1Ijoia2dyaWVuZGxpbmciLCJhIjoiY2l1ZmtvbWE1MDBmYjJ5bXBtN2hwZjIyNCJ9.VpQMostuYQYzhj_Yvg1xyg'
-        }).addTo(map);
-
-        */
-
 
   var layers = {
       Streets: L.mapbox.tileLayer('mapbox.streets'),
@@ -79,11 +60,6 @@ svg { position: relative; }
         }).addTo(map);
 
     var geojson = L.geoJson(statesData).addTo(map);
-
-    var imagename = 'testimagespaceshuttle.jpg',
-        imageBounds = [[28.5650, -80.607], [28.5859, -80.6508]];
-   
-  L.imageOverlay(imagename, imageBounds).addTo(map);
 
 L.marker([28.5860, -80.6507]).addTo(map);
 
@@ -109,10 +85,6 @@ function findrightlat(pixellat, leftlat, imageheight) {
 var lower_right = [findrightlat(D,F,imageh),findrightlon(A,E,imagew)];
 
 
-L.marker(upper_left).addTo(map);
-L.marker(lower_right).addTo(map);
-
-L.imageOverlay('oct16testimage.jpg', [lower_right, upper_left]).addTo(map);
 
 
 function FileHelper()
@@ -131,8 +103,7 @@ function FileHelper()
 
 var text = FileHelper.readStringFromFileAtPath ( "http://localhost:8080/matthewtestimage2wld.wld" );
 var textarray = text.split("\n");
-//console.log(textarray);
-//console.log(textarray[0]);
+
 
 var wldarray = text.split("\n").map(function(item) {
     return parseFloat(item);
@@ -158,12 +129,31 @@ var A = wldarrayin[0],
 
 var imagebounds2 = wldtolatlon(wldarray);
 
-L.marker(imagebounds2[1]).addTo(map);
-L.marker(imagebounds2[0]).addTo(map);
 
-L.imageOverlay('matthewtestimage2.jpg', imagebounds2).addTo(map);
 
-console.log(globalimagelist);
+//////////////////////////////////////////below this line is the image adding function
+
+function putjpgsonmap(arrayoffilenames){
+    for( var i=0, len = 3; i < len; i++){
+    var path = "Matthew/Oct%2016/" +  arrayoffilenames[i] + ".wld";
+    var text = FileHelper.readStringFromFileAtPath ( path );
+    var textarray = text.split("\n");
+    var wldarray = text.split("\n").map(function(item) {
+    return parseFloat(item);});
+    console.log(i);
+    // console.log(wldarray);
+    var imagebounds = wldtolatlon(wldarray);
+
+   L.marker(imagebounds[1]).addTo(map);
+   //L.marker(imagebounds[0]).addTo(map);
+    var jpgname = "Matthew/Oct%2016/" +  arrayoffilenames[i] + ".jpg";
+    console.log(jpgname);
+   L.imageOverlay(jpgname, imagebounds).addTo(map);
+
+};
+};
+
+putjpgsonmap(globalimagelist);
 
 </script> 
 
