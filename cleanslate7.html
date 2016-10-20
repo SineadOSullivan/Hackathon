@@ -34,6 +34,7 @@ svg { position: relative; }
     <script type="text/javascript" src="us-states.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
     <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+    <script src=getimagelist.js></script> 
     <link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
     
     <script>
@@ -162,65 +163,10 @@ L.marker(imagebounds2[0]).addTo(map);
 
 L.imageOverlay('matthewtestimage2.jpg', imagebounds2).addTo(map);
 
-</script>
-<script>
+console.log(globalimagelist);
 
-var folder = "Matthew/Oct 16";
+</script> 
 
-function getwlds(){
-var wlds=[];
-
-$.ajax({
-  async: false,
-  url: folder,
-  success: function(data){
-     $(data).find("a:contains(.wld)").each(function(){
-        // will loop through 
-            var newwld;
-             newwld = $(this).attr("href");
-             wlds.push(newwld);
-             //wlds = wlds + newwld;
-       //console.log(wlds);
-
-     });
-  }
-});
-return wlds
-//console.log(wlds);
-};
-
-var wldlist = getwlds();
-console.log(wldlist);
-
-
-
-function getjpgs(){
-var jpgs=[];
-
-$.ajax({
-  async: false,
-  url: folder,
-  success: function(data){
-     $(data).find("a:contains(.jpg)").each(function(){
-        // will loop through 
-            var newjpg;
-             newjpg = $(this).attr("href");
-             jpgs.push(newjpg);
-
-
-     });
-  }
-});
-return jpgs
-//console.log(jpgs);
-};
-
-var jpglist = getjpgs();
-console.log(jpglist);
-
-
-
-</script>
-
+    
 </body>
 </html>
