@@ -7,7 +7,7 @@
 
 
 var boundingbox = '-122.34, 28.62, -59.41, 46.567';  //Input the bounding box in which to listen
-var fileversion = 'US_ElectionDay1';  //input a unique string to append to the end of the log file to make a unique log.  No input will cause the default log to be overwritten. 
+var fileversion = 'US_ElectionDay2';  //input a unique string to append to the end of the log file to make a unique log.  No input will cause the default log to be overwritten. 
 
 /////////////////////MAIN CODE/////////////////////////////////
 console.log("Hello I'm Started!");
