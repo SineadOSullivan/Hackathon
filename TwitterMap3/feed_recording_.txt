@@ -1,0 +1,2 @@
+This Twitter Feed is Recording for this Bounding Box (sw long, sw lat, ne long, ne lat)   35.9, 33.1, 37.4, 36.3Starting at this date and time  Thu Nov 03 2016 19:56:01 GMT-0400 (Eastern Daylight Time)
+Screen Name, Tweet Content, Tweet Time, User Location, Coordinates, Tweet Place
